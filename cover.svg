@@ -1,38 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Capa de modelo de jogo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b1120" />
-      <stop offset="1" stop-color="#1e3a8a" />
-    </linearGradient>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.07" />
-    </pattern>
+    <radialGradient id="luzLanterna" cx="34%" cy="56%" r="48%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.32" />
+      <stop offset="55%" stop-color="#0f172a" stop-opacity="0.88" />
+      <stop offset="100%" stop-color="#04070f" stop-opacity="1" />
+    </radialGradient>
   </defs>
 
-  <rect width="800" height="450" fill="url(#bg)" />
-  <rect width="800" height="450" fill="url(#grid)" />
-  <circle cx="690" cy="60" r="150" fill="#3b82f6" opacity="0.2" />
+  
+  <rect width="800" height="450" fill="#04070f" />
 
-  <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif">
-    <text x="56" y="72" fill="#93c5fd" font-size="15" font-weight="800" letter-spacing="4">JOGOS VR</text>
+  
+  <circle cx="95" cy="70" r="2" fill="#e2e8f0" opacity="0.8" />
+  <circle cx="210" cy="45" r="1.5" fill="#94a3b8" opacity="0.7" />
+  <circle cx="640" cy="65" r="2.5" fill="#38bdf8" opacity="0.8" />
+  <circle cx="725" cy="115" r="2" fill="#e2e8f0" opacity="0.75" />
+  <circle cx="540" cy="390" r="2" fill="#e2e8f0" opacity="0.6" />
+  <circle cx="130" cy="395" r="2.5" fill="#38bdf8" opacity="0.65" />
 
-    <g transform="translate(520 130)">
-      <circle cx="90" cy="90" r="86" fill="none" stroke="#334155" stroke-width="14" />
-      <circle cx="90" cy="90" r="56" fill="none" stroke="#f59e0b" stroke-width="14" />
-      <circle cx="90" cy="90" r="26" fill="#3b82f6" />
-      <circle cx="90" cy="90" r="8" fill="#ffffff" />
-    </g>
+  
+  <rect x="70" y="130" width="660" height="240" rx="14" fill="#0f172a" stroke="#334155" stroke-width="6" />
+  <rect x="170" y="130" width="22" height="130" fill="#334155" />
+  <rect x="290" y="230" width="22" height="140" fill="#334155" />
+  <rect x="430" y="130" width="22" height="145" fill="#334155" />
+  <rect x="560" y="210" width="22" height="160" fill="#334155" />
 
-    <text x="56" y="280" fill="#ffffff" font-size="54" font-weight="900" letter-spacing="-1.5">Seu jogo aqui</text>
-    <text x="58" y="320" fill="#bfdbfe" font-size="19" font-weight="600">Copie esta pasta, troque o conteúdo e entregue.</text>
+  
+  <polygon points="235,280 520,175 520,355" fill="#38bdf8" opacity="0.16" />
+  <rect width="800" height="450" fill="url(#luzLanterna)" />
 
-    <g transform="translate(58 352)">
-      <rect width="128" height="34" rx="17" fill="#ffffff" fill-opacity="0.1" stroke="#ffffff" stroke-opacity="0.2" />
-      <text x="64" y="22" fill="#e2e8f0" font-size="12" font-weight="700" text-anchor="middle">pasta-modelo</text>
-    </g>
-    <g transform="translate(198 352)">
-      <rect width="150" height="34" rx="17" fill="#ffffff" fill-opacity="0.1" stroke="#ffffff" stroke-opacity="0.2" />
-      <text x="75" y="22" fill="#e2e8f0" font-size="12" font-weight="700" text-anchor="middle">HTML + CSS + JS</text>
-    </g>
-  </g>
+  
+  <circle cx="375" cy="215" r="14" fill="#38bdf8" stroke="#ffffff" stroke-width="3" />
+  <text x="375" y="190" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7dd3fc" text-anchor="middle">TERMINAL</text>
+
+  
+  <circle cx="235" cy="280" r="18" fill="#f8fafc" />
+  <circle cx="242" cy="278" r="8" fill="#0284c7" />
+
+  
+  <circle cx="645" cy="265" r="22" fill="#ef4444" />
+  <rect x="635" y="257" width="6" height="6" fill="#fef08a" />
+  <rect x="649" y="257" width="6" height="6" fill="#fef08a" />
+
+  
+  <text x="400" y="64" font-family="system-ui, sans-serif" font-size="40" font-weight="800" fill="#f8fafc" text-anchor="middle" letter-spacing="1.5">
+    SCARY SPACE GAME
+  </text>
+  <text x="400" y="96" font-family="system-ui, sans-serif" font-size="17" font-weight="600" fill="#38bdf8" text-anchor="middle">
+    Regra de Três &amp; Gírias em Inglês • 8º C
+  </text>
 </svg>

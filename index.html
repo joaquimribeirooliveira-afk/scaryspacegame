@@ -1,48 +1,135 @@
-<!doctype html>
-<html lang="pt-BR" data-theme="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
-    <title>Modelo de Jogo — Jogos VR</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="app">
-      <header class="top">
-        <div>
-          <span class="kicker">Modelo</span>
-          <h1 id="title">Clique no Alvo</h1>
-          <p class="subtitle">Troque este jogo pelo seu. O contrato já está pronto.</p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scary Space Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container-jogo" id="app">
+    <!-- Cabeçalho com título, informações da partida e botões rápidos -->
+    <header class="barra-superior">
+      <div class="titulo-area">
+        <h1>Scary Space Game</h1>
+        <p class="subtitulo">Encontre os 10 terminais da nave e fuja da criatura</p>
+      </div>
+
+      <div class="status-painel" aria-live="polite">
+        <div class="indicador">
+          <span class="rotulo">Terminais</span>
+          <strong id="texto-terminais">0 / 10</strong>
         </div>
-        <button id="restart" class="btn" type="button">Reiniciar</button>
-      </header>
-
-      <main>
-        <div class="hud">
-          <span class="pill">Alvos: <strong id="score">0</strong>/<span id="total">10</span></span>
-          <span class="pill">Tempo: <strong id="timer">0,0s</strong></span>
+        <div class="indicador">
+          <span class="rotulo">Pontos</span>
+          <strong id="texto-pontos">0</strong>
         </div>
-
-        <div id="board" class="board" aria-label="Área do jogo">
-          <p id="start-hint" class="start-hint">Clique no alvo para começar</p>
+        <div class="indicador">
+          <span class="rotulo">Laser</span>
+          <strong id="texto-laser">3 / 3</strong>
         </div>
-      </main>
+        <div class="indicador barra-box">
+          <span class="rotulo">Estamina (<span id="modo-corrida">Andando</span>)</span>
+          <div class="fundo-barra">
+            <div id="barra-estamina" class="preenchimento-barra"></div>
+          </div>
+        </div>
+      </div>
 
-      <footer class="bottom">
-        <p>Este é o arquivo <code>game.js</code>. Leia os comentários e adapte.</p>
-      </footer>
-    </div>
+      <div class="acoes-topo">
+        <button id="btn-tema" type="button" class="btn-secundario" title="Alternar tema claro/escuro">
+          Tema
+        </button>
+        <button id="btn-ajuda" type="button" class="btn-secundario" title="Ver comandos">
+          Comandos
+        </button>
+      </div>
+    </header>
 
-    <div id="result" class="overlay" hidden>
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="result-title">
-        <div class="modal-icon" aria-hidden="true">🎯</div>
-        <h2 id="result-title">Muito bem!</h2>
-        <p id="result-text">Você concluiu o jogo.</p>
-        <button id="play-again" class="btn btn-primary full" type="button">Jogar de novo</button>
+    <!-- Área principal do canvas (labirinto + lanterna) -->
+    <section class="area-canvas">
+      <canvas id="tela-jogo" width="760" height="460" aria-label="Mapa da estação espacial"></canvas>
+
+      <!-- Aviso flutuante quando perto de um terminal -->
+      <div id="aviso-interacao" class="aviso-flutuante escondido" role="status">
+        Perto de um terminal! Aperte <strong>E</strong> ou toque em <strong>Interagir</strong>
+      </div>
+
+      <!-- Mensagem curta de feedback após responder -->
+      <div id="banner-feedback" class="banner-feedback escondido" aria-live="assertive"></div>
+    </section>
+
+    <!-- Controles na tela (funcionam no celular e ajudam no computador) -->
+    <section class="controles-touch" aria-label="Controles do jogo">
+      <div class="direcionais">
+        <button type="button" class="btn-controle" data-dir="cima" aria-label="Mover para cima">▲ W</button>
+        <div class="linha-meio">
+          <button type="button" class="btn-controle" data-dir="esquerda" aria-label="Mover para esquerda">◀ A</button>
+          <button type="button" class="btn-controle" data-dir="baixo" aria-label="Mover para baixo">▼ S</button>
+          <button type="button" class="btn-controle" data-dir="direita" aria-label="Mover para direita">▶ D</button>
+        </div>
+      </div>
+
+      <div class="acoes-jogo">
+        <button id="btn-interagir" type="button" class="btn-acao destaque">
+          Interagir (E)
+        </button>
+        <button id="btn-correr" type="button" class="btn-acao">
+          Correr (F)
+        </button>
+        <button id="btn-laser" type="button" class="btn-acao alerta">
+          Laser (Espaço)
+        </button>
+      </div>
+    </section>
+
+    <!-- Tela inicial / instruções -->
+    <div id="modal-inicio" class="modal">
+      <div class="modal-cartao">
+        <h2>Alerta na Estação Espacial</h2>
+        <p>
+          As luzes falharam! Use sua lanterna para achar os <strong>10 terminais</strong> espalhados pelos corredores.
+        </p>
+        <ul class="lista-regras">
+          <li><strong>W A S D</strong> ou setas: andar pelo mapa.</li>
+          <li><strong>F</strong>: alternar entre andar e correr (gasta estamina).</li>
+          <li><strong>E</strong>: abrir o terminal próximo para responder (Regra de 3 ou Gírias em Inglês).</li>
+          <li><strong>Espaço</strong>: disparar o laser (3 cargas) para paralisar o monstro por 4 segundos.</li>
+          <li><strong>Se o monstro te pegar:</strong> acerte a pergunta de emergência para mandá-lo de volta ao início. Se errar, a missão reinicia!</li>
+        </ul>
+        <button id="btn-comecar" type="button" class="btn-principal">Iniciar Missão</button>
       </div>
     </div>
 
-    <script src="game.js"></script>
-  </body>
+    <!-- Modal de Pergunta (Terminal ou Defesa contra o Monstro) -->
+    <div id="modal-pergunta" class="modal escondido" role="dialog" aria-modal="true">
+      <div class="modal-cartao">
+        <span id="etiqueta-pergunta" class="etiqueta">Terminal #1 • Matemática</span>
+        <h2 id="titulo-pergunta">Desafio de Regra de Três</h2>
+        <p id="enunciado-pergunta" class="enunciado"></p>
+        <div id="lista-opcoes" class="opcoes-grid"></div>
+        <div id="explicacao-box" class="explicacao-box escondido">
+          <p id="texto-explicacao"></p>
+          <button id="btn-continuar-jogo" type="button" class="btn-principal">Continuar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Final (Vitória ou Derrota) -->
+    <div id="modal-fim" class="modal escondido" role="dialog" aria-modal="true">
+      <div class="modal-cartao">
+        <h2 id="titulo-fim">Missão Concluída!</h2>
+        <p id="mensagem-fim"></p>
+        <div class="resumo-final">
+          <div><span>Terminais ativados:</span> <strong id="fim-terminais">10/10</strong></div>
+          <div><span>Pontuação final:</span> <strong id="fim-pontos">0</strong></div>
+          <div><span>Tempo total:</span> <strong id="fim-tempo">0s</strong></div>
+        </div>
+        <button id="btn-reiniciar" type="button" class="btn-principal">Jogar Novamente</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="game.js"></script>
+</body>
 </html>
